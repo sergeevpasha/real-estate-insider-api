@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+    nginx:
+        container_name: "real-estate-insider_nginx"
+        image: nginx:1.25-alpine
+        tty: true
+        volumes:
+            - ./docker/nginx:/etc/nginx/conf.d:ro
+            - ./:/var/www:ro
+            - ./docker/logs:/var/log/nginx
+        networks:
+            - default-network
+    php:
+        container_name: "real-estate-insider_php"
+        build: ./docker/images/php
+        image: real-estate-insider/php
+        tty: true
+        hostname: "real-estate-insider_php"
+        volumes:
+            - ./:/var/www:consistent
+        networks:
+            - default-network
+    pgsql:
+        container_name: "real-estate-insider_pgsql"
+        image: postgres:13.2-alpine
+        shm_size: 1g
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=secret
+        volumes:
+            - ./docker/postgres/init:/docker-entrypoint-initdb.d/:ro
+            - pgdata:/var/lib/postgresql/data:rw
+        networks:
+            - default-network
+networks:
+    default-network:
+        name: "real-estate-insider-network"
+        driver: bridge
+volumes:
+    pgdata:
+        name: "real-estate-insider_pgdata"

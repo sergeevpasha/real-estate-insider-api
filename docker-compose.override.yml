@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  nginx:
+    ports:
+      - "${DOCKER_NGINX_PORT:-80}:80"
+  pgsql:
+    ports:
+      - ${DOCKER_PGSQL_PORT}:5432
+  ngrok:
+    container_name: "real-estate-insider_ngrok"
+    image: ngrok/ngrok
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTH_TOKEN}
+    command:
+      - http
+      - "host.docker.internal:${DOCKER_NGINX_PORT:-80}"
+      - "--domain=enjoyed-choice-flea.ngrok-free.app"
+
+    ports:
+      - "${DOCKER_NGROK_PORT:-4040}:4040"
+    networks:
+      - default-network
+  mailhog:
+    container_name: "real-estate-insider_mailhog"
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - ${DOCKER_MAILTRAP_PORT:-8025}:8025
+    networks:
+      - default-network
