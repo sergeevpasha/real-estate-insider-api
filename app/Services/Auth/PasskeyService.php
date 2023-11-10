@@ -247,6 +247,9 @@ readonly class PasskeyService
             $algorithmManager
         );
 
+        logger(json_encode($publicKeyCredential));
+        logger($publicKeyCredential->rawId);
+        logger(base64_encode($publicKeyCredential->rawId));
         $passkey = $this->passkeyRepository->getByCredentialId($publicKeyCredential->rawId);
 
         $publicKeyCredentialSource = $authenticatorAttestationResponseValidator->check(
