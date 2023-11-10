@@ -252,7 +252,7 @@ readonly class PasskeyService
         $publicKeyCredentialSource = $authenticatorAttestationResponseValidator->check(
             PublicKeyCredentialSource::createFromArray($passkey->public_key),
             $publicKeyCredential->response,
-            PublicKeyCredentialRequestOptions::create(json_decode($session, true)),
+            PublicKeyCredentialRequestOptions::createFromArray(json_decode($session, true)),
             config('app.domain'),
             $publicKeyCredential->rawId,
 
