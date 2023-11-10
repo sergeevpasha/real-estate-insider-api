@@ -8,6 +8,7 @@ use App\Dto\PasskeyData;
 use App\Models\Passkey;
 use App\Repositories\Contracts\PasskeyRepositoryContract;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Crypt;
 
 readonly class PasskeyRepository implements PasskeyRepositoryContract
 {
@@ -24,7 +25,7 @@ readonly class PasskeyRepository implements PasskeyRepositoryContract
      */
     public function getByCredentialId(string $publicKeyCredentialId): ?Passkey
     {
-        return $this->passkey->where('credential_id', '=', base64_encode($publicKeyCredentialId))->first();
+        return $this->passkey->where('credential_id', '=', Crypt::encryptString($publicKeyCredentialId))->first();
     }
 
     /**

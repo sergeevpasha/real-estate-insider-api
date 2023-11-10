@@ -23,6 +23,7 @@ use Cose\Algorithm\Signature\RSA\RS384;
 use Cose\Algorithm\Signature\RSA\RS512;
 use Cose\Algorithms;
 use Exception;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
@@ -155,6 +156,7 @@ readonly class PasskeyService
         logger($publicKeyCredentialSource->publicKeyCredentialId);
         logger(base64_encode($publicKeyCredentialSource->publicKeyCredentialId));
         logger(base64_decode($publicKeyCredentialSource->publicKeyCredentialId));
+        logger(Crypt::encryptString($publicKeyCredentialSource->publicKeyCredentialId));
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
             new PasskeyData([
