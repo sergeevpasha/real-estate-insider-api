@@ -19,6 +19,15 @@ readonly class PasskeyRepository implements PasskeyRepositoryContract
     }
 
     /**
+     * @param string $publicKeyCredentialId
+     * @return Passkey|null
+     */
+    public function getByCredentialId(string $publicKeyCredentialId): ?Passkey
+    {
+        return $this->passkey->where('credential_id', '=', base64_encode($publicKeyCredentialId))->first();
+    }
+
+    /**
      * Get User associated passkeys
      *
      * @param int $userId

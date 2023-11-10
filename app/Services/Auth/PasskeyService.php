@@ -239,7 +239,6 @@ readonly class PasskeyService
                 Ed512::create(),
             );
 
-        $user = $this->userRepository->getBySystemName($publicKeyCredential->rawId);
 
         $authenticatorAttestationResponseValidator = AuthenticatorAssertionResponseValidator::create(
             null,
@@ -248,8 +247,10 @@ readonly class PasskeyService
             $algorithmManager
         );
 
+        $passkey = $this->passkeyRepository->getByCredentialId($publicKeyCredential->rawId);
+
         $publicKeyCredentialSource = $authenticatorAttestationResponseValidator->check(
-            PublicKeyCredentialSource::createFromArray($user->public_key),
+            PublicKeyCredentialSource::createFromArray($passkey->public_key),
             $publicKeyCredential->response,
             PublicKeyCredentialRequestOptions::create(json_decode($session, true)),
             config('app.domain'),

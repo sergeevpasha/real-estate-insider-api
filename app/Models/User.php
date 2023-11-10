@@ -20,7 +20,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $full_name
  * @property string $system_name
- * @property array $public_key
  */
 class User extends Model implements
     AuthenticatableContract,
