@@ -177,7 +177,7 @@ readonly class PasskeyService
 
         $allowedCredentials = array_map(
             static function (array $passkey): PublicKeyCredentialDescriptor {
-                $credential = PublicKeyCredentialSource::createFromArray($passkey->public_key);
+                $credential = PublicKeyCredentialSource::createFromArray($passkey['public_key']);
                 return $credential->getPublicKeyCredentialDescriptor();
             },
             $passkeys->toArray()
