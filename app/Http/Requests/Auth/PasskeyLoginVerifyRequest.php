@@ -30,7 +30,7 @@ class PasskeyLoginVerifyRequest extends FormRequest
             'id'                         => ['required', 'string'],
             'rawId'                      => ['required', 'string'],
             'response'                   => ['required', 'array'],
-            'response.attestationObject' => ['required', 'string'],
+            'response.authenticatorData' => ['required', 'string'],
             'response.clientDataJSON'    => ['required', 'string'],
             'response.signature'         => ['required', 'string'],
             'response.userHandle'        => ['required', 'string'],
