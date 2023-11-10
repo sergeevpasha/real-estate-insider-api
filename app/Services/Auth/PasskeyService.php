@@ -46,7 +46,7 @@ readonly class PasskeyService
     {
         $rpEntity = PublicKeyCredentialRpEntity::create(
             'Real Estate Insider Webauthn',
-            'localhost'
+            config('app.url')
         );
 
         $user = $this->userRepository->findByEmail($email);
@@ -132,7 +132,7 @@ readonly class PasskeyService
         $publicKeyCredentialSource = $authenticatorAttestationResponseValidator->check(
             $publicKeyCredential->response,
             PublicKeyCredentialCreationOptions::createFromArray(json_decode($session, true)),
-            'localhost'
+            config('app.url')
         );
 
         logger($publicKeyCredentialSource);
