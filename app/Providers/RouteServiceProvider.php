@@ -44,7 +44,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiV1Routes(): void
     {
-        Route::prefix('api/v1')
+        Route::prefix('v1')
             ->middleware('api')
             ->namespace($this->namespace . '\Api\v1')
             ->group(
