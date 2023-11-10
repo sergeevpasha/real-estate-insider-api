@@ -11,6 +11,7 @@ use App\Http\Resources\Api\v1\UserResource;
 use App\Services\Auth\PasskeyService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 use Webauthn\Exception\InvalidDataException;
@@ -58,6 +59,10 @@ class PasskeyLoginController extends Controller
         $user = $this->passkeyService->verifyLogin($data, $session);
 
         $request->session()->forget(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY);
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
 
         return $this->jsonResponse(new UserResource($user));
     }
