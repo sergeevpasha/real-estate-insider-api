@@ -53,7 +53,7 @@ readonly class PasskeyService
 
         $userEntity = PublicKeyCredentialUserEntity::create(
             $user->system_name,
-            (string) $user->id,
+            $user->system_name,
             $user->full_name ?? 'Secret Agent'
         );
 
@@ -136,8 +136,6 @@ readonly class PasskeyService
         );
 
         logger(json_encode($publicKeyCredentialSource ));
-        logger(json_encode($publicKeyCredential->response ));
-        logger(json_encode($publicKeyCredential->response->userHandle ));
-        return $this->userRepository->getBySystemName($publicKeyCredential->response->userHandle);
+        return $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
     }
 }
