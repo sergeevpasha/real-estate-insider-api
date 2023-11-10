@@ -152,6 +152,9 @@ readonly class PasskeyService
             config('app.domain')
         );
 
+        logger($publicKeyCredentialSource->publicKeyCredentialId);
+        logger(base64_encode($publicKeyCredentialSource->publicKeyCredentialId));
+        logger(base64_decode($publicKeyCredentialSource->publicKeyCredentialId));
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
             new PasskeyData([
