@@ -239,7 +239,6 @@ readonly class PasskeyService
                 Ed512::create(),
             );
 
-
         $authenticatorAttestationResponseValidator = AuthenticatorAssertionResponseValidator::create(
             null,
             null,

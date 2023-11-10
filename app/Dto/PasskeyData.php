@@ -9,13 +9,13 @@ class PasskeyData extends AbstractDto
 
     private readonly int $userId;
     private readonly string $credentialId;
-    private readonly string $publicKey;
+    private readonly array $publicKey;
 
     public function __construct(array $data)
     {
         $this->userId = $data['user_id'] ?? '';
         $this->credentialId = $data['credential_id'] ?? '';
-        $this->publicKey = $data['public_key'] ?? '';
+        $this->publicKey = $data['public_key'] ?? [];
     }
 
     /**
