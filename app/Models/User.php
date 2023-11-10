@@ -16,12 +16,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * @method static create(array $array)
- * @method where(string $column, string $symbol, mixed $value)
  * @property int $id
  * @property string $email
  * @property string $full_name
  * @property string $system_name
+ * @property array $public_key
  */
 class User extends Model implements
     AuthenticatableContract,

@@ -15,9 +15,9 @@ use Illuminate\Validation\ValidationException;
 use Throwable;
 use Webauthn\Exception\InvalidDataException;
 
-class PasskeyLoginController extends Controller
+class PasskeyRegisterController extends Controller
 {
-    public const CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY = 'publicKeyCredentialRequestOptions';
+    public const CREDENTIAL_CREATION_OPTIONS_SESSION_KEY = 'publicKeyCredentialCreationOptions';
 
     /**
      * @param PasskeyService $passkeyService
@@ -34,10 +34,10 @@ class PasskeyLoginController extends Controller
     public function generateOptions(PasskeyGenerateOptionsRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $options = $this->passkeyService->generateLoginOptions($data['email']);
+        $options = $this->passkeyService->generateRegistrationOptions($data['email']);
 
-        $request->session()->forget(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY);
-        $request->session()->put(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY, json_encode($options));
+        $request->session()->forget(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY);
+        $request->session()->put(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY, json_encode($options));
 
         return $this->jsonResponse($options);
     }
@@ -53,11 +53,11 @@ class PasskeyLoginController extends Controller
     {
         $data = $request->validated();
 
-        $session = $request->session()->get(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY);
+        $session = $request->session()->get(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY);
 
-        $user = $this->passkeyService->verifyLogin($data, $session);
+        $user = $this->passkeyService->verifyRegistration($data, $session);
 
-        $request->session()->forget(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY);
+        $request->session()->forget(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY);
 
         return $this->jsonResponse(new UserResource($user));
     }
