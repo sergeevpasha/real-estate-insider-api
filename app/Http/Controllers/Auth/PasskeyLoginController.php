@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\PasskeyGenerateOptionsRequest;
-use App\Http\Requests\Auth\PasskeyVerifyRequest;
+use App\Http\Requests\Auth\PasskeyLoginVerifyRequest;
 use App\Http\Resources\Api\v1\UserResource;
 use App\Services\Auth\PasskeyService;
 use Exception;
@@ -43,13 +43,13 @@ class PasskeyLoginController extends Controller
     }
 
     /**
-     * @param PasskeyVerifyRequest $request
+     * @param PasskeyLoginVerifyRequest $request
      * @return JsonResponse
      * @throws InvalidDataException
-     * @throws ValidationException
      * @throws Throwable
+     * @throws ValidationException
      */
-    public function verify(PasskeyVerifyRequest $request): JsonResponse
+    public function verify(PasskeyLoginVerifyRequest $request): JsonResponse
     {
         $data = $request->validated();
 
