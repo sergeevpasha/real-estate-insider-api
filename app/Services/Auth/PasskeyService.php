@@ -135,7 +135,7 @@ readonly class PasskeyService
             config('app.domain')
         );
 
-        logger($publicKeyCredentialSource);
+        logger(json_encode($publicKeyCredentialSource ));
         return $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
     }
 }
