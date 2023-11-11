@@ -141,6 +141,7 @@ readonly class PasskeyService
             $attestationObjectLoader
         );
 
+        logger(json_decode(urldecode($data['attributes'])));
         $publicKeyCredential = $publicKeyCredentialLoader->load(urldecode($data['attributes']));
 
         if (!$publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
@@ -163,6 +164,7 @@ readonly class PasskeyService
             PublicKeyCredentialCreationOptions::createFromArray(json_decode($session, true)),
             config('app.domain')
         );
+        logger('ddd');
 
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
@@ -174,6 +176,7 @@ readonly class PasskeyService
             ])
         );
 
+        logger($user);
         return $user;
     }
 
