@@ -185,7 +185,7 @@ readonly class PasskeyService
     {
         $user = $this->userRepository->findByEmail($email);
 
-        $passkeys = $this->passkeyRepository->getUserPasskeys($user->id);
+        $passkeys = $this->passkeyRepository->getUserPasskeys($user);
 
         $allowedCredentials = array_map(
             static function (array $passkey): PublicKeyCredentialDescriptor {
