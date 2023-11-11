@@ -26,6 +26,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
@@ -142,6 +143,7 @@ readonly class PasskeyService
         );
 
         logger(urldecode($data['attributes']));
+
         $publicKeyCredential = $publicKeyCredentialLoader->load(urldecode($data['attributes']));
 
         if (!$publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
@@ -166,6 +168,7 @@ readonly class PasskeyService
         );
         logger('ddd');
 
+        logger(Base64UrlSafe::decodeNoPadding($publicKeyCredentialSource->publicKeyCredentialId));
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
             new PasskeyData([
