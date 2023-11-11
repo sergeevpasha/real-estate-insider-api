@@ -163,7 +163,9 @@ readonly class PasskeyService
             $publicKeyCredential->response,
             PublicKeyCredentialCreationOptions::createFromArray(json_decode($session, true)),
             config('app.domain')
-        ); 
+        );
+        logger($publicKeyCredential->rawId);
+        logger($publicKeyCredentialSource->publicKeyCredentialId);
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
             new PasskeyData([
