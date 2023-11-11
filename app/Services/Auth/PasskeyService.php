@@ -141,7 +141,7 @@ readonly class PasskeyService
             $attestationObjectLoader
         );
 
-        logger(json_decode(urldecode($data['attributes'])));
+        logger(urldecode($data['attributes']));
         $publicKeyCredential = $publicKeyCredentialLoader->load(urldecode($data['attributes']));
 
         if (!$publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
