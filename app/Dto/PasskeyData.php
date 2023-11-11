@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
+use Carbon\Carbon;
+
 class PasskeyData extends AbstractDto
 {
     private readonly ?int $userId;
     private readonly ?string $credentialId;
     private readonly ?array $publicKey;
     private readonly ?string $name;
-    private readonly ?string $lastUsedAt;
+    private readonly ?Carbon $lastUsedAt;
 
     public function __construct(array $data)
     {
@@ -54,9 +56,9 @@ class PasskeyData extends AbstractDto
     }
 
     /**
-     * @return string
+     * @return Carbon
      */
-    public function getLastUsedAt(): string
+    public function getLastUsedAt(): Carbon
     {
         return $this->lastUsedAt;
     }
