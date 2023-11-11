@@ -26,7 +26,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
-use ParagonIE\ConstantTime\Base64UrlSafe;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
@@ -131,6 +130,9 @@ readonly class PasskeyService
      */
     public function verifyRegistration(array $data, string $session): ?User
     {
+        $name = $data['name'];
+        unset($data['name']);
+
         $attestationStatementSupportManager = AttestationStatementSupportManager::create();
         $attestationStatementSupportManager->add(NoneAttestationStatementSupport::create());
 
@@ -142,7 +144,7 @@ readonly class PasskeyService
             $attestationObjectLoader
         );
 
-        $publicKeyCredential = $publicKeyCredentialLoader->load(urldecode($data['attributes']));
+        $publicKeyCredential = $publicKeyCredentialLoader->load(json_encode($data));
 
         if (!$publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
             throw ValidationException::withMessages([
@@ -164,19 +166,17 @@ readonly class PasskeyService
             PublicKeyCredentialCreationOptions::createFromArray(json_decode($session, true)),
             config('app.domain')
         );
-        logger($publicKeyCredential->rawId);
-        logger($publicKeyCredentialSource->publicKeyCredentialId);
+
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
             new PasskeyData([
                 'user_id'       => $user->id,
-                'credential_id' => $publicKeyCredential->rawId,
+                'credential_id' => base64_encode($publicKeyCredentialSource->publicKeyCredentialId),
                 'public_key'    => $publicKeyCredentialSource->jsonSerialize(),
-                'name'          => $data['name'],
+                'name'          => $name,
             ])
         );
 
-        logger($user);
         return $user;
     }
 
