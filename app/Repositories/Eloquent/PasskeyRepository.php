@@ -49,4 +49,17 @@ readonly class PasskeyRepository implements PasskeyRepositoryContract
     {
         return $this->passkey->create($passkeyData->toArray());
     }
+
+    /**
+     * Update Passkey
+     *
+     * @param Passkey $passkey
+     * @param PasskeyData $passkeyData
+     * @return Passkey
+     */
+    public function update(Passkey $passkey, PasskeyData $passkeyData): Passkey
+    {
+        $passkey->update($passkeyData->toArray());
+        return $passkey->refresh();
+    }
 }

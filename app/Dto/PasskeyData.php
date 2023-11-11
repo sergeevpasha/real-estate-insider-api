@@ -6,18 +6,19 @@ namespace App\Dto;
 
 class PasskeyData extends AbstractDto
 {
-
-    private readonly int $userId;
-    private readonly string $credentialId;
-    private readonly array $publicKey;
-    private readonly string $name;
+    private readonly ?int $userId;
+    private readonly ?string $credentialId;
+    private readonly ?array $publicKey;
+    private readonly ?string $name;
+    private readonly ?string $lastUsedAt;
 
     public function __construct(array $data)
     {
-        $this->userId = $data['user_id'] ?? '';
-        $this->credentialId = $data['credential_id'] ?? '';
+        $this->userId = $data['user_id'] ?? null;
+        $this->credentialId = $data['credential_id'] ?? null;
         $this->publicKey = $data['public_key'] ?? [];
         $this->name = $data['name'] ?? null;
+        $this->lastUsedAt = $data['last_used_at'] ?? null;
     }
 
     /**
@@ -53,6 +54,14 @@ class PasskeyData extends AbstractDto
     }
 
     /**
+     * @return string
+     */
+    public function getLastUsedAt(): string
+    {
+        return $this->lastUsedAt;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -62,6 +71,7 @@ class PasskeyData extends AbstractDto
             'credential_id' => $this->credentialId,
             'public_key'    => $this->publicKey,
             'name'          => $this->name,
+            'last_used_at'  => $this->lastUsedAt,
         ];
     }
 }
