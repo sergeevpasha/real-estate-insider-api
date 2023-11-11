@@ -57,6 +57,7 @@ class PasskeyRegisterController extends Controller
 
         $user = $this->passkeyService->verifyRegistration($data, $session);
 
+        dd('wdwdw');
         $request->session()->forget(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY);
 
         return $this->jsonResponse(new UserResource($user));

@@ -78,6 +78,7 @@ readonly class PasskeyService
             'Real Estate Insider Webauthn',
             config('app.domain')
         );
+
         $user = $this->userRepository->findByEmail($email);
 
         $userEntity = PublicKeyCredentialUserEntity::create(
