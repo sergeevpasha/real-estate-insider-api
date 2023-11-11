@@ -26,7 +26,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
-use ParagonIE\ConstantTime\Base64UrlSafe;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
@@ -163,15 +162,19 @@ readonly class PasskeyService
             $publicKeyCredential->response,
             PublicKeyCredentialCreationOptions::createFromArray(json_decode($session, true)),
             config('app.domain')
-        ); 
-        logger(utf8_encode($publicKeyCredentialSource->publicKeyCredentialId));
+        );
+        logger(mb_convert_encoding($publicKeyCredentialSource->publicKeyCredentialId, 'ISO-8859-1', 'UTF-8'));
         $user = $this->userRepository->getBySystemName($publicKeyCredentialSource->userHandle);
         $this->passkeyRepository->create(
             new PasskeyData([
-                'user_id'       => $user->id,
-                'credential_id' => utf8_encode($publicKeyCredentialSource->publicKeyCredentialId),
-                'public_key'    => $publicKeyCredentialSource->jsonSerialize(),
-                'name'          => $data['name'],
+                'user_id' => $user->id,
+                'credential_id' => mb_convert_encoding(
+                    $publicKeyCredentialSource->publicKeyCredentialId,
+                    'ISO-8859-1',
+                    'UTF-8'
+                ),
+                'public_key' => $publicKeyCredentialSource->jsonSerialize(),
+                'name' => $data['name'],
             ])
         );
 
