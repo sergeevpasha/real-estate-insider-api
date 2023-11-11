@@ -15,7 +15,7 @@ abstract class Controller extends BaseController
     use AuthorizesRequests;
     use ValidatesRequests;
 
-    protected function jsonResponse(JsonResource|array $data, $message = '', $code = 200): JsonResponse
+    protected function jsonResponse(JsonResource|array $data = [], $message = 'notification.success', $code = 200): JsonResponse
     {
         return response()->json([
             'message' => __($message),

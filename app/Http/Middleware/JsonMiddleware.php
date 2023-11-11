@@ -27,7 +27,7 @@ class JsonMiddleware
             [
                 'message' => $data['message'],
                 'status'  => $response->getStatusCode(),
-                'data'    => $data['data'],
+                'data'    => $data['data'] ?? [],
             ]
         );
 

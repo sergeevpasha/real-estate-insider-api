@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\v1\UserController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class)->only('update');
+    ROute::get('/users/{user}/passkeys', [UserController::class, 'getUserPasskeys'])->name('user.passkeys');
 });

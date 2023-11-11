@@ -29,7 +29,7 @@ class ResetPasswordMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Shipped',
+            subject: 'Reset Email',
         );
     }
 

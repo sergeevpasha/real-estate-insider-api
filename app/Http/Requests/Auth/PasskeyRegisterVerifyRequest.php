@@ -40,6 +40,7 @@ class PasskeyRegisterVerifyRequest extends FormRequest
             'type'                        => ['required', 'string'],
             'clientExtensionResults'      => ['array'],
             'authenticatorAttachment'     => ['required', 'string'],
+            'name'                        => ['required', 'string', 'max:255'],
         ];
     }
 }

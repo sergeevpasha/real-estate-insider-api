@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\v1\Auth\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GithubLoginController;
 use App\Http\Controllers\Auth\GoogleLoginController;
 use App\Http\Controllers\Auth\LoginController;
@@ -34,10 +34,14 @@ Route::post('/auth/2fa/passkey/register/verify', [PasskeyRegisterController::cla
 Route::post('/auth/2fa/passkey/login/generate-options', [PasskeyLoginController::class, 'generateOptions']);
 Route::post('/auth/2fa/passkey/login/verify', [PasskeyLoginController::class, 'verify']);
 Route::get('/auth/user', [AuthController::class, 'fetchUser']);
+ROute::delete('auth/passkeys/{passkey}', [AuthController::class, 'deleteUserPasskey'])->name('user.passkey.delete');
+ROute::patch('auth/passkeys/{passkey}', [AuthController::class, 'updateUserPasskey'])->name('user.passkey.update');
 Route::post('/send-reset-link', [PasswordResetController::class, 'sendResetLinkEmail'])
     ->name('password.request');
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
     ->name('password.reset');
+Route::post('/validate-token', [PasswordResetController::class, 'validateExpirationToken'])
+    ->name('password.validate-token');
 
 Route::get('/', function () {
     return view('welcome');

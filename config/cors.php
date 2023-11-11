@@ -15,7 +15,19 @@ return [
     |
     */
 
-    'paths' => ['v1/*', 'sanctum/csrf-cookie', 'login/github', 'login/github/callback', 'login', 'logout', 'register', 'auth/*'],
+    'paths' => [
+        'v1/*',
+        'sanctum/csrf-cookie',
+        'login/github',
+        'login/github/callback',
+        'login',
+        'logout',
+        'register',
+        'send-reset-link',
+        'reset-password',
+        '/validate-token',
+        'auth/*'
+    ],
 
     'allowed_methods' => ['*'],
 

@@ -67,7 +67,7 @@
         </p>
     </div>
     <div class="footer">
-        &copy; {{ date('Y') }} Your Company. All rights reserved.
+        &copy; {{ date('Y') }} Real Estate Insider. All rights reserved.
     </div>
 </div>
 </body>

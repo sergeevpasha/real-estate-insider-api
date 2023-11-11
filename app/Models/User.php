@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -67,5 +68,13 @@ class User extends Model implements
                 $attributes['last_name'],
             ),
         );
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function passkeys(): HasMany
+    {
+        return $this->hasMany(Passkey::class);
     }
 }

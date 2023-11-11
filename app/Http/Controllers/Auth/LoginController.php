@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
     /**
      * @param UserService $userService
      */

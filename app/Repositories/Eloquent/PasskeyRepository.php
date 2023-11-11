@@ -6,6 +6,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Dto\PasskeyData;
 use App\Models\Passkey;
+use App\Models\User;
 use App\Repositories\Contracts\PasskeyRepositoryContract;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -30,12 +31,12 @@ readonly class PasskeyRepository implements PasskeyRepositoryContract
     /**
      * Get User associated passkeys
      *
-     * @param int $userId
+     * @param User $user
      * @return Collection|null
      */
-    public function getUserPasskeys(int $userId): ?Collection
+    public function getUserPasskeys(User $user): ?Collection
     {
-        return $this->passkey->where('user_id', '=', $userId)->get();
+        return $user->passkeys()->get();
     }
 
     /**

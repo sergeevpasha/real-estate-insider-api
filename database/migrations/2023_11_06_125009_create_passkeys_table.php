@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,8 +17,24 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->text('credential_id');
-            $table->text('public_key');
+            $table->string('name')
+                ->comment('Name of the passkey');
+            $table->text('credential_id')
+                ->comment('Credential Id to determine the passkey');
+            $table->text('public_key')
+                ->comment('Public key to compare against user private key');
+            $table->timestamp('last_used_at')
+                ->nullable()
+                ->comment('Last time the passkey was used');
+            $table->string('last_used_ip')
+                ->nullable()
+                ->comment('Last IP the passkey was used from');
+            $table->text('last_used_user_agent')
+                ->nullable()
+                ->comment('Last user agent the passkey was used from');
+            $table->string('last_used_location')
+                ->nullable()
+                ->comment('Last location the passkey was used from');
             $table->timestamps();
         });
     }

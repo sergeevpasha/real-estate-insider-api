@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Auth;
 
 use App\Dto\PasskeyData;
+use App\Http\Resources\Api\v1\Collections\PasskeyResourceCollection;
 use App\Models\User;
 use App\Repositories\Contracts\PasskeyRepositoryContract;
 use App\Repositories\Contracts\UserRepositoryContract;
@@ -23,6 +24,7 @@ use Cose\Algorithm\Signature\RSA\RS384;
 use Cose\Algorithm\Signature\RSA\RS512;
 use Cose\Algorithms;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
@@ -54,6 +56,15 @@ readonly class PasskeyService
         private PasskeyRepositoryContract $passkeyRepository,
         private UserRepositoryContract $userRepository
     ) {
+    }
+
+    /**
+     * @param User $user
+     * @return Collection|null
+     */
+    public function getUserPasskeys(User $user): ?Collection
+    {
+       return $this->passkeyRepository->getUserPasskeys($user);
     }
 
     /**
@@ -157,7 +168,8 @@ readonly class PasskeyService
             new PasskeyData([
                 'user_id'       => $user->id,
                 'credential_id' => $publicKeyCredentialSource->publicKeyCredentialId,
-                'public_key'    => $publicKeyCredentialSource->jsonSerialize()
+                'public_key'    => $publicKeyCredentialSource->jsonSerialize(),
+                'name'          => $data['name'],
             ])
         );
 

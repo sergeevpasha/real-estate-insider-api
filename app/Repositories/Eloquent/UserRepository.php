@@ -39,11 +39,14 @@ class UserRepository implements UserRepositoryContract
      * Find User by ID
      *
      * @param int $userId
+     * @param array $with
      * @return User|null
      */
-    public function getById(int $userId): ?User
+    public function getById(int $userId, array $with = []): ?User
     {
-        return $this->user->where('id', '=', $userId)->first();
+        return $this->user->where('id', '=', $userId)
+            ->when(count($with) > 0, fn($query) => $query->with($with))
+            ->first();
     }
 
     /**

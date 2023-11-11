@@ -10,12 +10,14 @@ class PasskeyData extends AbstractDto
     private readonly int $userId;
     private readonly string $credentialId;
     private readonly array $publicKey;
+    private readonly string $name;
 
     public function __construct(array $data)
     {
         $this->userId = $data['user_id'] ?? '';
         $this->credentialId = $data['credential_id'] ?? '';
         $this->publicKey = $data['public_key'] ?? [];
+        $this->name = $data['name'] ?? null;
     }
 
     /**
@@ -43,6 +45,14 @@ class PasskeyData extends AbstractDto
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -50,7 +60,8 @@ class PasskeyData extends AbstractDto
         return [
             'user_id'       => $this->userId,
             'credential_id' => $this->credentialId,
-            'public_key'    => $this->publicKey
+            'public_key'    => $this->publicKey,
+            'name'          => $this->name,
         ];
     }
 }
