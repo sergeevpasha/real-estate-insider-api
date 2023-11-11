@@ -51,13 +51,13 @@ class PasskeyRegisterController extends Controller
      */
     public function verify(PasskeyRegisterVerifyRequest $request): JsonResponse
     {
+        dd('wdwdw');
         $data = $request->validated();
 
         $session = $request->session()->get(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY);
 
         $user = $this->passkeyService->verifyRegistration($data, $session);
 
-        dd('wdwdw');
         $request->session()->forget(self::CREDENTIAL_CREATION_OPTIONS_SESSION_KEY);
 
         return $this->jsonResponse(new UserResource($user));
