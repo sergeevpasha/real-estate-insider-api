@@ -27,20 +27,8 @@ class PasskeyRegisterVerifyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id'                          => ['required', 'string'],
-            'rawId'                       => ['required', 'string'],
-            'response'                    => ['required', 'array'],
-            'response.attestationObject'  => ['required', 'string'],
-            'response.clientDataJSON'     => ['required', 'string'],
-            'response.transports'         => ['required', 'array'],
-            'response.transports.*'       => ['required', 'string'],
-            'response.publicKeyAlgorithm' => ['required', 'integer'],
-            'response.publicKey'          => ['required', 'string'],
-            'response.authenticatorData'  => ['required', 'string'],
-            'type'                        => ['required', 'string'],
-            'clientExtensionResults'      => ['array'],
-            'authenticatorAttachment'     => ['required', 'string'],
-            'name'                        => ['required', 'string', 'max:255'],
+            'attributes' => ['required', 'string'],
+            'name'       => ['required', 'string', 'max:255'],
         ];
     }
 }

@@ -130,9 +130,6 @@ readonly class PasskeyService
      */
     public function verifyRegistration(array $data, string $session): ?User
     {
-        $name = $data['name'];
-        unset($data['name']);
-
         $attestationStatementSupportManager = AttestationStatementSupportManager::create();
         $attestationStatementSupportManager->add(NoneAttestationStatementSupport::create());
 
@@ -144,7 +141,7 @@ readonly class PasskeyService
             $attestationObjectLoader
         );
 
-        $publicKeyCredential = $publicKeyCredentialLoader->load(json_encode($data));
+        $publicKeyCredential = $publicKeyCredentialLoader->load(json_encode(urldecode($data['attributes'])));
 
         if (!$publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
             throw ValidationException::withMessages([
@@ -173,7 +170,7 @@ readonly class PasskeyService
                 'user_id'       => $user->id,
                 'credential_id' => $publicKeyCredentialSource->publicKeyCredentialId,
                 'public_key'    => $publicKeyCredentialSource->jsonSerialize(),
-                'name'          => $name,
+                'name'          => $data['name'],
             ])
         );
 
