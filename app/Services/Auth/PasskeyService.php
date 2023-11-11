@@ -129,6 +129,9 @@ readonly class PasskeyService
      */
     public function verifyRegistration(array $data, string $session): ?User
     {
+        $name = $data['name'];
+        unset($data['name']);
+
         $attestationStatementSupportManager = AttestationStatementSupportManager::create();
         $attestationStatementSupportManager->add(NoneAttestationStatementSupport::create());
 
@@ -169,7 +172,7 @@ readonly class PasskeyService
                 'user_id'       => $user->id,
                 'credential_id' => $publicKeyCredentialSource->publicKeyCredentialId,
                 'public_key'    => $publicKeyCredentialSource->jsonSerialize(),
-                'name'          => $data['name'],
+                'name'          => $name,
             ])
         );
 
