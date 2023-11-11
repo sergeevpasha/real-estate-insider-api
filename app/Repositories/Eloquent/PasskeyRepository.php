@@ -47,7 +47,7 @@ readonly class PasskeyRepository implements PasskeyRepositoryContract
      */
     public function create(PasskeyData $passkeyData): Passkey
     {
-        return $this->passkey->create($passkeyData->toArray());
+        return $this->passkey->create($passkeyData->toNotNullableArray());
     }
 
     /**
@@ -59,7 +59,7 @@ readonly class PasskeyRepository implements PasskeyRepositoryContract
      */
     public function update(Passkey $passkey, PasskeyData $passkeyData): Passkey
     {
-        $passkey->update($passkeyData->toArray());
+        $passkey->update($passkeyData->toNotNullableArray());
         return $passkey->refresh();
     }
 }
