@@ -23,8 +23,13 @@ class JsonMiddleware
 
         $response = $next($request);
         $data = $response->getData(true);
-        $data['status'] = $response->getStatusCode();
-        $response->setData($data);
+        $response->setData(
+            [
+                'message' => $data['message'],
+                'status'  => $response->getStatusCode(),
+                'data'    => $data['data'],
+            ]
+        );
 
         return $response;
     }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 /**
  * @method static create(array $array)
  * @method create(array $array)
+ * @method static where(string $column, string $symbol, mixed $value)
  * @method where(string $column, string $symbol, mixed $value)
  */
 abstract class Model extends BaseModel implements ModelInterface

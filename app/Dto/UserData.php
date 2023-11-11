@@ -10,7 +10,7 @@ class UserData extends AbstractDto
     private readonly ?string $firstName;
     private readonly ?string $lastName;
     private readonly ?string $email;
-    private readonly ?string $systemName;
+    private ?string $systemName;
     private readonly ?string $applicationLanguage;
     private ?string $password;
     private ?bool $passwordNotSet;

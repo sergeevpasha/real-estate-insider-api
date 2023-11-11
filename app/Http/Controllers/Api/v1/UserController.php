@@ -8,6 +8,7 @@ use App\Dto\UserData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\User\UpdateUserRequest;
 use App\Http\Resources\Api\v1\UserResource;
+use App\Models\User;
 use App\Services\Auth\UserService;
 use Illuminate\Http\JsonResponse;
 
@@ -21,9 +22,9 @@ class UserController extends Controller
     {
     }
 
-    public function update(UpdateUserRequest $request, int $id): JsonResponse
+    public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        $this->userService->update(new UserData($request->validated()), $id);
-        return $this->jsonResponse(new UserResource($request->user()), "notification.users.login");
+        $this->userService->update(new UserData($request->validated()), $user);
+        return $this->jsonResponse(new UserResource($request->user()), "notification.users.update");
     }
 }

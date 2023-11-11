@@ -78,12 +78,11 @@ readonly class UserService
 
     /**
      * @param UserData $fields
-     * @param int $userId
-     * @return User|null
+     * @param User $user
+     * @return User
      */
-    public function update(UserData $fields, int $userId): ?User
+    public function update(UserData $fields, User $user): User
     {
-        $user = $this->userRepository->getById($userId);
         return $this->userRepository->update(
             $user,
             $fields->toNotNullableArray()
