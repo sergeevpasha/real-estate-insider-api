@@ -6,11 +6,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\PasskeyGenerateOptionsRequest;
+use App\Http\Requests\Auth\PasskeyGenerateStrictOptionsRequest;
 use App\Http\Requests\Auth\PasskeyLoginVerifyRequest;
 use App\Http\Resources\Api\v1\UserResource;
 use App\Services\Auth\PasskeyService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -32,10 +34,25 @@ class PasskeyLoginController extends Controller
      * @return JsonResponse
      * @throws Exception
      */
-    public function generateOptions(PasskeyGenerateOptionsRequest $request): JsonResponse
+    public function generateStrictOptions(PasskeyGenerateOptionsRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $options = $this->passkeyService->generateLoginOptions($data['email']);
+        $options = $this->passkeyService->generateStrictLoginOptions($data['email']);
+
+        $request->session()->forget(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY);
+        $request->session()->put(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY, json_encode($options));
+
+        return $this->jsonResponse($options);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function generateOptions(Request $request): JsonResponse
+    {
+        $options = $this->passkeyService->generateLoginOptions();
 
         $request->session()->forget(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY);
         $request->session()->put(self::CREDENTIAL_REQUEST_OPTIONS_SESSION_KEY, json_encode($options));

@@ -31,6 +31,7 @@ Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle']);
 Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
 Route::post('/auth/2fa/passkey/register/generate-options', [PasskeyRegisterController::class, 'generateOptions']);
 Route::post('/auth/2fa/passkey/register/verify', [PasskeyRegisterController::class, 'verify']);
+Route::post('/auth/2fa/passkey/login/generate-strict-options', [PasskeyLoginController::class, 'generateStrictOptions']);
 Route::post('/auth/2fa/passkey/login/generate-options', [PasskeyLoginController::class, 'generateOptions']);
 Route::post('/auth/2fa/passkey/login/verify', [PasskeyLoginController::class, 'verify']);
 Route::get('/auth/user', [AuthController::class, 'fetchUser']);

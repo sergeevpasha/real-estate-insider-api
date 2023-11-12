@@ -75,7 +75,7 @@ readonly class PasskeyService
     public function generateRegistrationOptions(string $email): array
     {
         $rpEntity = PublicKeyCredentialRpEntity::create(
-            'Real Estate Insider Webauthn',
+            'Real Estate Insider',
             config('app.domain')
         );
 
@@ -185,25 +185,39 @@ readonly class PasskeyService
      * @return array
      * @throws Exception
      */
-    public function generateLoginOptions(string $email): array
+    public function generateStrictLoginOptions(string $email): array
     {
-//        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByEmail($email);
 
-//        $passkeys = $this->passkeyRepository->getUserPasskeys($user);
+        $passkeys = $this->passkeyRepository->getUserPasskeys($user);
 
-//        $allowedCredentials = array_map(
-//            static function (array $passkey): PublicKeyCredentialDescriptor {
-//                $credential = PublicKeyCredentialSource::createFromArray($passkey['public_key']);
-//                return $credential->getPublicKeyCredentialDescriptor();
-//            },
-//            $passkeys->toArray()
-//        );
-//
+        $allowedCredentials = array_map(
+            static function (array $passkey): PublicKeyCredentialDescriptor {
+                $credential = PublicKeyCredentialSource::createFromArray($passkey['public_key']);
+                return $credential->getPublicKeyCredentialDescriptor();
+            },
+            $passkeys->toArray()
+        );
+
 
         $publicKeyCredentialRequestOptions =
             PublicKeyCredentialRequestOptions::create(
                 challenge: random_bytes(32),
-//                allowCredentials: $allowedCredentials
+                allowCredentials: $allowedCredentials
+            );
+
+        return $publicKeyCredentialRequestOptions->jsonSerialize();
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function generateLoginOptions(): array
+    {
+        $publicKeyCredentialRequestOptions =
+            PublicKeyCredentialRequestOptions::create(
+                challenge: random_bytes(32),
             );
 
         return $publicKeyCredentialRequestOptions->jsonSerialize();

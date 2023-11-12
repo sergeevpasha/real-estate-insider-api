@@ -64,9 +64,9 @@ class UserRepository implements UserRepositoryContract
      * Find User by Email
      *
      * @param string $email
-     * @return User
+     * @return ?User
      */
-    public function findByEmail(string $email): User
+    public function findByEmail(string $email): ?User
     {
         return $this->user->where('email', '=', $email)->first();
     }
@@ -75,9 +75,9 @@ class UserRepository implements UserRepositoryContract
      * Find User by GitHub ID
      *
      * @param string $githubId
-     * @return User
+     * @return ?User
      */
-    public function findByGithubId(string $githubId): User
+    public function findByGithubId(string $githubId): ?User
     {
         return $this->user->where('github_id', '=', $githubId)->first();
     }
