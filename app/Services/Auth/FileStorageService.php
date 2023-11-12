@@ -77,7 +77,7 @@ readonly class FileStorageService
             $disk = config('filesystems')['default'];
         }
 
-        if (Storage::exists("/private/$trimmedPath")) {
+        if (Storage::disk($disk)->exists("/private/$trimmedPath")) {
             Storage::disk($disk)->delete("/private/$trimmedPath");
         }
     }
