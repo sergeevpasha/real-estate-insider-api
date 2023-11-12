@@ -16,6 +16,9 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->comment('Registered users (realtors) within the system.');
             $table->id();
+            $table->string('avatar')
+                ->nullable()
+                ->comment('Path to User avatar');
             $table->string('first_name')
                 ->nullable()
                 ->comment('User first name');
@@ -43,10 +46,13 @@ return new class extends Migration {
                 ->comment('User application language');
             $table->string('github_id')
                 ->nullable()
-                ->comment('User github id');
+                ->comment('Connected GitHub ID');
+            $table->string('github_nickname')
+                ->nullable()
+                ->comment('GitHub nickname');
             $table->string('google_id')
                 ->nullable()
-                ->comment('User google id');
+                ->comment('Connected google ID');
             $table->timestamps();
         });
     }

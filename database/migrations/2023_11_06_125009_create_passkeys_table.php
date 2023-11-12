@@ -11,6 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('passkeys', function (Blueprint $table) {
+            $table->comment('Passkeys for users to login without password.');
             $table->id();
             $table->foreignId('user_id')
                 ->index()

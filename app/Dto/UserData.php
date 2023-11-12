@@ -10,6 +10,7 @@ class UserData extends AbstractDto
     private readonly ?string $firstName;
     private readonly ?string $lastName;
     private readonly ?string $email;
+    private readonly ?string $avatar;
     private ?string $systemName;
     private readonly ?string $applicationLanguage;
     private ?string $password;
@@ -23,8 +24,9 @@ class UserData extends AbstractDto
         $this->firstName = $data['first_name'] ?? null;
         $this->lastName = $data['last_name'] ?? null;
         $this->email = $data['email'] ?? null;
+        $this->avatar = $data['avatar'] ?? null;
         $this->systemName = $data['system_name'] ?? null;
-        $this->applicationLanguage = $data['application_language'] ?? 'en';
+        $this->applicationLanguage = $data['application_language'] ?? null;
         $this->password = $data['password'] ?? null;
         $this->passwordNotSet = $data['password_not_set'] ?? false;
         $this->githubId = $data['github_id'] ?? null;
@@ -61,6 +63,16 @@ class UserData extends AbstractDto
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    /**
+     * Get avatar url
+     *
+     * @return string|null
+     */
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
     }
 
     /**
@@ -138,6 +150,7 @@ class UserData extends AbstractDto
             'first_name'           => $this->firstName,
             'last_name'            => $this->lastName,
             'email'                => $this->email,
+            'avatar'               => $this->avatar,
             'system_name'          => $this->systemName,
             'application_language' => $this->applicationLanguage,
             'password'             => $this->password,

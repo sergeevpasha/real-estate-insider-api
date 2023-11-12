@@ -21,6 +21,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $full_name
  * @property string $system_name
+ * @property string $avatar
  */
 class User extends Model implements
     AuthenticatableContract,

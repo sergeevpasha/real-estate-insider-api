@@ -14,7 +14,9 @@
     "laravel/sanctum": "^3.3",
     "laravel/socialite": "^5.9",
     "laravel/tinker": "^2.8",
-    "web-auth/webauthn-lib": "^4.7"
+    "league/flysystem-aws-s3-v3": "^3.19",
+    "web-auth/webauthn-lib": "^4.7",
+    "ext-fileinfo": "*"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.1",

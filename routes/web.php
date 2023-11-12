@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\PasskeyLoginController;
 use App\Http\Controllers\Auth\PasskeyRegisterController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FileStorageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -35,8 +35,11 @@ Route::post('/auth/2fa/passkey/login/generate-strict-options', [PasskeyLoginCont
 Route::post('/auth/2fa/passkey/login/generate-options', [PasskeyLoginController::class, 'generateOptions']);
 Route::post('/auth/2fa/passkey/login/verify', [PasskeyLoginController::class, 'verify']);
 Route::get('/auth/user', [AuthController::class, 'fetchUser']);
-ROute::delete('auth/passkeys/{passkey}', [AuthController::class, 'deleteUserPasskey'])->name('user.passkey.delete');
-ROute::patch('auth/passkeys/{passkey}', [AuthController::class, 'updateUserPasskey'])->name('user.passkey.update');
+ROute::delete('auth/passkeys/{passkey}', [AuthController::class, 'deleteUserPasskey'])
+    ->name('user.passkey.delete');
+ROute::patch('auth/passkeys/{passkey}', [AuthController::class, 'updateUserPasskey'])
+    ->name('user.passkey.update');
+
 Route::post('/send-reset-link', [PasswordResetController::class, 'sendResetLinkEmail'])
     ->name('password.request');
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
@@ -44,6 +47,11 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 Route::post('/validate-token', [PasswordResetController::class, 'validateExpirationToken'])
     ->name('password.validate-token');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('files/{name}', [FileStorageController::class, 'viewable'])
+    ->middleware('auth')
+    ->where('name', '.*')
+    ->name('files.view');
+Route::get('downloads/{name}', [FileStorageController::class, 'downloadable'])
+    ->middleware('auth')
+    ->where('name', '.*')
+    ->name('files.download');

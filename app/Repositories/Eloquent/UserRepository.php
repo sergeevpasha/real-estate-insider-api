@@ -32,7 +32,7 @@ class UserRepository implements UserRepositoryContract
      */
     public function create(UserData $userData): User
     {
-        return $this->user->create($userData->toArray());
+        return $this->user->create($userData->toNotNullableArray());
     }
 
     /**
@@ -101,12 +101,12 @@ class UserRepository implements UserRepositoryContract
      * Update User
      *
      * @param User $user
-     * @param array $userData
+     * @param UserData $userData
      * @return User
      */
-    public function update(User $user, array $userData): User
+    public function update(User $user, UserData $userData): User
     {
-        $user->update($userData);
+        $user->update($userData->toNotNullableArray());
         return $user->refresh();
     }
 

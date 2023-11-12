@@ -13,6 +13,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->comment('Failed jobs for queue system.');
             $table->id();
             $table->string('uuid')->unique();
             $table->text('connection');

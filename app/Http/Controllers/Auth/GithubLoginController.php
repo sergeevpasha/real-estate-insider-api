@@ -58,7 +58,9 @@ class GithubLoginController extends Controller
         $user = $this->userService->setSocialUser(
             new UserAuthFields([
                 'github_id'            => $githubUser->getId(),
+                'github_nickname'      => $githubUser->getNickname(),
                 'email'                => $githubUser->getEmail(),
+                'avatar_url'           => $githubUser->getAvatar(),
                 'application_language' => $this->guessLanguage($request)
             ])
         );

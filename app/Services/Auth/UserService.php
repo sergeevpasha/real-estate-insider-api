@@ -19,9 +19,12 @@ readonly class UserService
 {
     /**
      * @param UserRepositoryContract $userRepository
+     * @param FileStorageService $fileStorageService
      */
-    public function __construct(private UserRepositoryContract $userRepository)
-    {
+    public function __construct(
+        private UserRepositoryContract $userRepository,
+        private FileStorageService $fileStorageService
+    ) {
     }
 
     /**
@@ -69,8 +72,12 @@ readonly class UserService
         } else {
             $user = $this->userRepository->update(
                 $user,
-                Arr::except($fields->toNotNullableArray(), ['application_language'])
+                new UserData(Arr::except($fields->toNotNullableArray(), ['application_language']))
             );
+        }
+
+        if ($avatarUrl = $fields->getAvatarUrl()) {
+            return $this->setUserAvatar($user, $avatarUrl);
         }
 
         return $user;
@@ -83,10 +90,7 @@ readonly class UserService
      */
     public function update(UserData $fields, User $user): User
     {
-        return $this->userRepository->update(
-            $user,
-            $fields->toNotNullableArray()
-        );
+        return $this->userRepository->update($user, $fields);
     }
 
     /**
@@ -113,5 +117,30 @@ readonly class UserService
         }
 
         return $this->generateSystemName($email);
+    }
+
+    /**
+     * @param User $user
+     * @param string $avatarUrl
+     * @return User
+     */
+    private function setUserAvatar(User $user, string $avatarUrl): User
+    {
+        $oldAvatar = $user->avatar;
+        $avatar = $this->fileStorageService->downloadExternalImage($avatarUrl);
+        $avatarStorageLink = $this->fileStorageService->storeFile($avatar, "users/$user->id/avatar");
+
+        $user = $this->userRepository->update(
+            $user,
+            new UserData([
+                'avatar' => $avatarStorageLink
+            ])
+        );
+
+        if ($oldAvatar) {
+            $this->fileStorageService->deleteFile($oldAvatar);
+        }
+
+        return $user;
     }
 }
