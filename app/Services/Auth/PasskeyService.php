@@ -203,7 +203,7 @@ readonly class PasskeyService
         $publicKeyCredentialRequestOptions =
             PublicKeyCredentialRequestOptions::create(
                 challenge: random_bytes(32),
-                allowCredentials: $allowedCredentials
+//                allowCredentials: $allowedCredentials
             );
 
         return $publicKeyCredentialRequestOptions->jsonSerialize();
