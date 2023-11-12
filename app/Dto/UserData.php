@@ -6,7 +6,6 @@ namespace App\Dto;
 
 class UserData extends AbstractDto
 {
-
     private readonly ?string $firstName;
     private readonly ?string $lastName;
     private readonly ?string $email;
@@ -16,6 +15,7 @@ class UserData extends AbstractDto
     private ?string $password;
     private ?bool $passwordNotSet;
     private readonly ?int $githubId;
+    private readonly ?string $githubNickname;
     private readonly ?string $githubToken;
     private readonly ?string $googleId;
     private readonly ?string $googleToken;
@@ -32,6 +32,7 @@ class UserData extends AbstractDto
         $this->password = $data['password'] ?? null;
         $this->passwordNotSet = $data['password_not_set'] ?? false;
         $this->githubId = $data['github_id'] ?? null;
+        $this->githubNickname = $data['github_nickname'] ?? null;
         $this->githubToken = $data['github_token'] ?? null;
         $this->googleId = $data['google_id'] ?? null;
         $this->googleToken = $data['google_token'] ?? null;
@@ -176,6 +177,7 @@ class UserData extends AbstractDto
             'password'             => $this->password,
             'password_not_set'     => $this->passwordNotSet,
             'github_id'            => $this->githubId,
+            'github_nickname'      => $this->githubNickname,
             'github_token'         => $this->githubToken,
             'google_id'            => $this->googleId,
             'google_token'         => $this->googleToken
