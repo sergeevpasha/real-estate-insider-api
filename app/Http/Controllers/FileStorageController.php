@@ -23,12 +23,12 @@ class FileStorageController extends Controller
             return Storage::disk($disk)->response("/private/$name");
         }
 
-        return app()-response()->abort(404);
+        abort(404);
     }
 
     /**
      * @param Request $request
-     * @param string                   $path
+     * @param string $path
      *
      * @return Response
      */
@@ -39,6 +39,6 @@ class FileStorageController extends Controller
             return Storage::download("/private/$path", $name);
         }
 
-        return app()-response()->abort(404);
+        abort(404);
     }
 }
