@@ -44,8 +44,6 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        $request->session()->invalidate();
-
         return $this->jsonResponse([],  "notification.users.logout");
     }
 }

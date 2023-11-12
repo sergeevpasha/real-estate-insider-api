@@ -25,7 +25,7 @@ return [
         'register',
         'send-reset-link',
         'reset-password',
-        '/validate-token',
+        'validate-token',
         'auth/*'
     ],
 
