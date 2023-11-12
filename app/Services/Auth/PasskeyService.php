@@ -187,18 +187,18 @@ readonly class PasskeyService
      */
     public function generateLoginOptions(string $email): array
     {
-        $user = $this->userRepository->findByEmail($email);
+//        $user = $this->userRepository->findByEmail($email);
 
-        $passkeys = $this->passkeyRepository->getUserPasskeys($user);
+//        $passkeys = $this->passkeyRepository->getUserPasskeys($user);
 
-        $allowedCredentials = array_map(
-            static function (array $passkey): PublicKeyCredentialDescriptor {
-                $credential = PublicKeyCredentialSource::createFromArray($passkey['public_key']);
-                return $credential->getPublicKeyCredentialDescriptor();
-            },
-            $passkeys->toArray()
-        );
-
+//        $allowedCredentials = array_map(
+//            static function (array $passkey): PublicKeyCredentialDescriptor {
+//                $credential = PublicKeyCredentialSource::createFromArray($passkey['public_key']);
+//                return $credential->getPublicKeyCredentialDescriptor();
+//            },
+//            $passkeys->toArray()
+//        );
+//
 
         $publicKeyCredentialRequestOptions =
             PublicKeyCredentialRequestOptions::create(
