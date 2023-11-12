@@ -38,8 +38,8 @@ class VerifyCsrfToken extends Middleware
 
         $response->headers->setCookie(
             new Cookie(
-                'XSRF-TOKEN-PORTAL', $request->session()->token(), $this->availableAt(60 * $config['lifetime']),
-                $config['path'], $config['domain'], $config['secure'], false, false, $config['same_site'] ?? null
+                'XSRF-TOKEN', $request->session()->token(), $this->availableAt(60 * $config['lifetime']),
+                $config['path'], '.project-insignia-vanilla.online', $config['secure'], false, false, $config['same_site'] ?? null
             )
         );
 
@@ -56,7 +56,7 @@ class VerifyCsrfToken extends Middleware
     {
         $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
 
-        if (!$token && $header = $request->header('X-XSRF-TOKEN-PORTAL')) {
+        if (!$token && $header = $request->header('X-XSRF-TOKEN')) {
             try {
                 $token = CookieValuePrefix::remove($this->encrypter->decrypt($header, static::serialized()));
             } catch (DecryptException $e) {
