@@ -61,6 +61,7 @@ class GoogleLoginController extends Controller
                 'google_id'            => $googleUser->getId(),
                 'avatar_url'           => $googleUser->getAvatar(),
                 'email'                => $googleUser->getEmail(),
+                'google_token'         => $googleUser->token,
                 'application_language' => $this->guessLanguage($request)
             ])
         );

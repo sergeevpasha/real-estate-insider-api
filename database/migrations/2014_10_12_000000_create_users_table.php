@@ -50,9 +50,15 @@ return new class extends Migration {
             $table->string('github_nickname')
                 ->nullable()
                 ->comment('GitHub nickname');
+            $table->string('github_token')
+                ->nullable()
+                ->comment('GitHub token');
             $table->string('google_id')
                 ->nullable()
                 ->comment('Connected google ID');
+            $table->string('google_token')
+                ->nullable()
+                ->comment('Google token');
             $table->timestamps();
         });
     }

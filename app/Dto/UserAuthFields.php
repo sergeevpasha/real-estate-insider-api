@@ -12,7 +12,9 @@ class UserAuthFields extends AbstractDto
     private string $applicationLanguage;
     private ?int $githubId;
     private ?string $githubNickname;
+    private ?string $githubToken;
     private ?string $googleId;
+    private ?string $googleToken;
 
 
     public function __construct(array $data)
@@ -22,7 +24,9 @@ class UserAuthFields extends AbstractDto
         $this->applicationLanguage = $data['application_language'] ?? 'en';
         $this->githubId = $data['github_id'] ?? null;
         $this->githubNickname = $data['github_nickname'] ?? null;
+        $this->githubToken = $data['github_token'] ?? null;
         $this->googleId = $data['google_id'] ?? null;
+        $this->googleToken = $data['google_token'] ?? null;
     }
 
     /**
@@ -70,9 +74,25 @@ class UserAuthFields extends AbstractDto
     /**
      * @return string|null
      */
+    public function getGithubToken(): ?string
+    {
+        return $this->githubToken;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getGoogleId(): ?string
     {
         return $this->googleId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGoogleToken(): ?string
+    {
+        return $this->googleToken;
     }
 
     /**
@@ -85,7 +105,9 @@ class UserAuthFields extends AbstractDto
             'application_language' => $this->applicationLanguage,
             'github_id'            => $this->githubId,
             'github_nickname'      => $this->githubNickname,
-            'google_id'            => $this->googleId
+            'github_token'         => $this->githubToken,
+            'google_id'            => $this->googleId,
+            'google_token'         => $this->googleToken
         ];
     }
 }

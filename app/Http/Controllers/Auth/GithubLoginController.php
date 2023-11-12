@@ -61,6 +61,7 @@ class GithubLoginController extends Controller
                 'github_nickname'      => $githubUser->getNickname(),
                 'email'                => $githubUser->getEmail(),
                 'avatar_url'           => $githubUser->getAvatar(),
+                'github_token'         => $githubUser->token,
                 'application_language' => $this->guessLanguage($request)
             ])
         );
