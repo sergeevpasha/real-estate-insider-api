@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\NewAccessToken;
 
@@ -35,7 +36,7 @@ readonly class UserService
     {
         $registerData->setSystemName($this->generateSystemName($registerData->getEmail()));
         $registerData->setPassword(Hash::make($registerData->getPassword()));
-        return $this->userRepository->create($registerData);
+        return $this->userRepository->create($registerData->toNotNullableArray());
     }
 
     /**
@@ -56,23 +57,27 @@ readonly class UserService
      * @param UserAuthFields $fields
      * @return User|null
      */
-    public function setSocialUser(UserAuthFields $fields): ?User
+    public function setSocialUser(UserAuthFields $fields, ?User $authUser): ?User
     {
         $user = $this->userRepository->findByAuthFields($fields);
 
+        if ($authUser && $authUser->id !== $user->id) {
+            return null;
+        }
+
         if (!$user) {
             $user = $this->userRepository->create(
-                new UserData([
+                [
                     ...$fields->toNotNullableArray(),
-                    'password' => Hash::make(Str::random(32)),
+                    'password'         => Hash::make(Str::random(32)),
                     'password_not_set' => true,
-                    'system_name' => $this->generateSystemName($fields->getEmail())
-                ])
+                    'system_name'      => $this->generateSystemName($fields->getEmail())
+                ]
             );
         } else {
             $user = $this->userRepository->update(
                 $user,
-                new UserData(Arr::except($fields->toNotNullableArray(), ['application_language']))
+                Arr::except($fields->toNotNullableArray(), ['application_language'])
             );
         }
 
@@ -90,7 +95,43 @@ readonly class UserService
      */
     public function update(UserData $fields, User $user): User
     {
-        return $this->userRepository->update($user, $fields);
+        return $this->userRepository->update($user, $fields->toArray());
+    }
+
+    /**
+     * @param User $user
+     * @return User
+     */
+    public function invalidateGoogleToken(User $user): User
+    {
+        Http::post('https://oauth2.googleapis.com/revoke', [
+            'token' => $user->google_token
+        ]);
+
+        return $this->userRepository->update($user, [
+            'google_id'    => null,
+            'google_token' => null
+        ]);
+    }
+
+    /**
+     * @param User $user
+     * @return User
+     */
+    public function invalidateGithubToken(User $user): User
+    {
+        $github = config('services')['github'];
+
+        Http::withBasicAuth($github['client_id'], $github['client_secret'])
+            ->delete("https://api.github.com/applications/{$github['client_id']}/token", [
+                'access_token' => $user->github_token,
+            ]);
+
+        return $this->userRepository->update($user, [
+            'github_id'       => null,
+            'github_nickname' => null,
+            'github_token'    => null
+        ]);
     }
 
     /**
@@ -138,9 +179,9 @@ readonly class UserService
 
         $user = $this->userRepository->update(
             $user,
-            new UserData([
+            [
                 'avatar' => $avatarStorageLink
-            ])
+            ]
         );
 
         if ($oldAvatar) {

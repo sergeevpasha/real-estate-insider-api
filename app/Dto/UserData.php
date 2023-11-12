@@ -14,7 +14,7 @@ class UserData extends AbstractDto
     private readonly ?string $applicationLanguage;
     private ?string $password;
     private ?bool $passwordNotSet;
-    private readonly ?int $githubId;
+    private readonly ?string $githubId;
     private readonly ?string $githubNickname;
     private readonly ?string $githubToken;
     private readonly ?string $googleId;
@@ -114,9 +114,9 @@ class UserData extends AbstractDto
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getGithubId(): int
+    public function getGithubId(): string
     {
         return $this->githubId;
     }

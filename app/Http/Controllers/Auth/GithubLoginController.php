@@ -12,6 +12,7 @@ use App\Services\Auth\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -51,22 +52,32 @@ class GithubLoginController extends Controller
             return $hackRedirect;
         }
 
+        $authUser = $request->user();
+
         $githubUser = Socialite::driver('github')->user();
 
         $redirect = $request->session()->get('redirect');
 
         $user = $this->userService->setSocialUser(
             new UserAuthFields([
-                'github_id'            => $githubUser->getId(),
+                'github_id'            => (string) $githubUser->getId(),
                 'github_nickname'      => $githubUser->getNickname(),
                 'email'                => $githubUser->getEmail(),
                 'avatar_url'           => $githubUser->getAvatar(),
                 'github_token'         => $githubUser->token,
                 'application_language' => $this->guessLanguage($request)
-            ])
+            ]),
+            $authUser,
         );
 
-        Auth::login($user);
+        if (!$user && $authUser) {
+            return redirect("$redirect?error=github");
+        }
+
+        if (!$authUser) {
+            Auth::login($user);
+        }
+
 
         $request->session()->regenerate();
 
@@ -75,5 +86,16 @@ class GithubLoginController extends Controller
         }
 
         return redirect($redirect);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function invalidateGithub(Request $request): JsonResponse
+    {
+        $this->userService->invalidateGithubToken($request->user());
+
+        return $this->jsonResponse();
     }
 }

@@ -10,7 +10,7 @@ class UserAuthFields extends AbstractDto
     private string $email;
     private ?string $avatarUrl;
     private string $applicationLanguage;
-    private ?int $githubId;
+    private ?string $githubId;
     private ?string $githubNickname;
     private ?string $githubToken;
     private ?string $googleId;
@@ -56,9 +56,9 @@ class UserAuthFields extends AbstractDto
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getGithubId(): ?int
+    public function getGithubId(): ?string
     {
         return $this->githubId;
     }

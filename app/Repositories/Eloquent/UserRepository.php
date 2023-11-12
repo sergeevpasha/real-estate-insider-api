@@ -27,12 +27,12 @@ class UserRepository implements UserRepositoryContract
     /**
      * Create User
      *
-     * @param UserData $userData
+     * @param array $userData
      * @return User
      */
-    public function create(UserData $userData): User
+    public function create(array $userData): User
     {
-        return $this->user->create($userData->toNotNullableArray());
+        return $this->user->create($userData);
     }
 
     /**
@@ -83,6 +83,17 @@ class UserRepository implements UserRepositoryContract
     }
 
     /**
+     * Find User by Google ID
+     *
+     * @param string $googleId
+     * @return ?User
+     */
+    public function findByGoogleId(string $googleId): ?User
+    {
+        return $this->user->where('google_id', '=', $googleId)->first();
+    }
+
+    /**
      * Find User by Any Auth field
      *
      * @param UserAuthFields $fields
@@ -104,9 +115,9 @@ class UserRepository implements UserRepositoryContract
      * @param UserData $userData
      * @return User
      */
-    public function update(User $user, UserData $userData): User
+    public function update(User $user, array $userData): User
     {
-        $user->update($userData->toNotNullableArray());
+        $user->update($userData);
         return $user->refresh();
     }
 

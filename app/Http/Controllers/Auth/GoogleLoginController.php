@@ -52,21 +52,30 @@ class GoogleLoginController extends Controller
             return $hackRedirect;
         }
 
+        $authUser = $request->user();
+
         $googleUser = Socialite::driver('google')->user();
 
         $redirect = $request->session()->get('redirect');
 
         $user = $this->userService->setSocialUser(
             new UserAuthFields([
-                'google_id'            => $googleUser->getId(),
+                'google_id'            => (string) $googleUser->getId(),
                 'avatar_url'           => $googleUser->getAvatar(),
                 'email'                => $googleUser->getEmail(),
                 'google_token'         => $googleUser->token,
                 'application_language' => $this->guessLanguage($request)
-            ])
+            ]),
+            $authUser
         );
 
-        Auth::login($user);
+        if (!$user && $authUser) {
+            return redirect("$redirect?error=google");
+        }
+
+        if (!$authUser) {
+            Auth::login($user);
+        }
 
         $request->session()->regenerate();
 
@@ -75,5 +84,17 @@ class GoogleLoginController extends Controller
         }
 
         return redirect($redirect);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function invalidateGoogle(Request $request): JsonResponse
+    {
+        $this->userService->invalidateGoogleToken($request->user());
+
+        return $this->jsonResponse();
     }
 }

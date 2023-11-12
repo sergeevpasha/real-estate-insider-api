@@ -10,18 +10,5 @@ use Laravel\Sanctum\NewAccessToken;
 
 interface UserRepositoryContract
 {
-    /**
-     * Create User
-     *
-     * @param UserData $userData
-     * @return User
-     */
-    public function create(UserData $userData): User;
-
-    /**
-     * @param User $user
-     * @return NewAccessToken
-     */
-    public function createToken(User $user): NewAccessToken;
 
 }
