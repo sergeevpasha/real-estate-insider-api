@@ -16,7 +16,9 @@ class UserData extends AbstractDto
     private ?string $password;
     private ?bool $passwordNotSet;
     private readonly ?int $githubId;
+    private readonly ?string $githubToken;
     private readonly ?string $googleId;
+    private readonly ?string $googleToken;
 
 
     public function __construct(array $data)
@@ -30,7 +32,9 @@ class UserData extends AbstractDto
         $this->password = $data['password'] ?? null;
         $this->passwordNotSet = $data['password_not_set'] ?? false;
         $this->githubId = $data['github_id'] ?? null;
+        $this->githubToken = $data['github_token'] ?? null;
         $this->googleId = $data['google_id'] ?? null;
+        $this->googleToken = $data['google_token'] ?? null;
     }
 
     /**
@@ -117,11 +121,27 @@ class UserData extends AbstractDto
     }
 
     /**
+     * @return string
+     */
+    public function getGithubToken(): string
+    {
+        return $this->githubToken;
+    }
+
+    /**
      * @return int
      */
     public function getGoogleId(): int
     {
         return $this->googleId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleToken(): string
+    {
+        return $this->googleToken;
     }
 
     /**
@@ -156,7 +176,9 @@ class UserData extends AbstractDto
             'password'             => $this->password,
             'password_not_set'     => $this->passwordNotSet,
             'github_id'            => $this->githubId,
-            'google_id'            => $this->googleId
+            'github_token'         => $this->githubToken,
+            'google_id'            => $this->googleId,
+            'google_token'         => $this->googleToken
         ];
     }
 }
