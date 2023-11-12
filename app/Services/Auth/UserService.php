@@ -61,7 +61,7 @@ readonly class UserService
     {
         $user = $this->userRepository->findByAuthFields($fields);
 
-        if ($authUser && $authUser->id !== $user->id) {
+        if ($authUser && $user && $authUser->id !== $user->id) {
             return null;
         }
 
