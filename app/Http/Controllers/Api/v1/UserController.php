@@ -36,7 +36,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        $this->userService->update(new UserData($request->validated()), $user);
+        $this->userService->update($request->validated(), $user);
         return $this->jsonResponse(new UserResource($request->user()), "notification.users.update");
     }
 

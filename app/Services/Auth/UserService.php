@@ -89,13 +89,13 @@ readonly class UserService
     }
 
     /**
-     * @param UserData $fields
+     * @param array $fields
      * @param User $user
      * @return User
      */
-    public function update(UserData $fields, User $user): User
+    public function update(array $fields, User $user): User
     {
-        return $this->userRepository->update($user, $fields->toArray());
+        return $this->userRepository->update($user, $fields);
     }
 
     /**
