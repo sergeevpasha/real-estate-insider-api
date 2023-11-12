@@ -53,11 +53,13 @@ class GoogleLoginController extends Controller
         }
 
         $googleUser = Socialite::driver('google')->user();
+
         $redirect = $request->session()->get('redirect');
 
         $user = $this->userService->setSocialUser(
             new UserAuthFields([
                 'google_id'            => $googleUser->getId(),
+                'avatar_url'           => $googleUser->getAvatar(),
                 'email'                => $googleUser->getEmail(),
                 'application_language' => $this->guessLanguage($request)
             ])

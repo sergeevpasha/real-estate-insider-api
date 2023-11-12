@@ -10,8 +10,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property int $id
  * @property string $email
+ * @property ?string $avatar
  * @property string $application_language
  * @property ?int $github_id
+ * @property ?string $github_nickname
  * @property ?string google_id
  * @property ?string $first_name
  * @property ?string $last_name
@@ -30,8 +32,10 @@ class UserResource extends JsonResource
         return [
             'id'                   => $this->id,
             'email'                => $this->email,
+            'avatar'               => $this->avatar,
             'application_language' => $this->application_language,
             'github_id'            => $this->github_id,
+            'github_nickname'      => $this->github_nickname,
             'google_id'            => $this->google_id,
             'first_name'           => (string) $this->first_name,
             'last_name'            => (string) $this->last_name,

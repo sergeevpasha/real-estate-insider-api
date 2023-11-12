@@ -64,9 +64,9 @@ readonly class UserService
             $user = $this->userRepository->create(
                 new UserData([
                     ...$fields->toNotNullableArray(),
-                    'password'         => Hash::make(Str::random(32)),
+                    'password' => Hash::make(Str::random(32)),
                     'password_not_set' => true,
-                    'system_name'      => $this->generateSystemName($fields->getEmail())
+                    'system_name' => $this->generateSystemName($fields->getEmail())
                 ])
             );
         } else {
@@ -77,7 +77,7 @@ readonly class UserService
         }
 
         if ($avatarUrl = $fields->getAvatarUrl()) {
-            return $this->setUserAvatar($user, $avatarUrl);
+            return $this->setUserAvatarFromSocial($user, $avatarUrl);
         }
 
         return $user;
@@ -124,10 +124,16 @@ readonly class UserService
      * @param string $avatarUrl
      * @return User
      */
-    private function setUserAvatar(User $user, string $avatarUrl): User
+    private function setUserAvatarFromSocial(User $user, string $avatarUrl): User
     {
+        $fullAvatarUrl = strrpos($avatarUrl, '=') !== false ? substr(
+            $avatarUrl,
+            0,
+            strrpos($avatarUrl, '=')
+        ) : $avatarUrl;
+
         $oldAvatar = $user->avatar;
-        $avatar = $this->fileStorageService->downloadExternalImage($avatarUrl);
+        $avatar = $this->fileStorageService->downloadExternalImage($fullAvatarUrl);
         $avatarStorageLink = $this->fileStorageService->storeFile($avatar, "users/$user->id/avatar");
 
         $user = $this->userRepository->update(
